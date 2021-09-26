@@ -5,7 +5,7 @@ public class SumOfNumbers {
         // case. r is the difference between the consecutive numbers 1 in this case
 
         // I'm using the formula Sn = (n/2)[(2a)-(n-1)r] which is the sum of first n
-        // terms of a geometric progression So finding the sum the first n numbers for
+        // terms of an arithmetic progression So finding the sum the first n numbers for
         // each n=0...1,000,000,000 will take same time.
         // limit is the largest value which when reached the program terminates
         int limit = 1000000000;
