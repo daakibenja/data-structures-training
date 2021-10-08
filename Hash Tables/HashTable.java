@@ -1,4 +1,3 @@
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
@@ -28,7 +27,7 @@ public class HashTable {
             
             while (rowScanner.hasNext()) {
                 String word = rowScanner.next();
-                if (word.matches("[a-zA-Z]+")) {
+                if (word.matches("[a-zA-Z ]+\\s+\\w+")) {
                     words.add(word);
 
                 } else {
