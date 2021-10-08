@@ -1,49 +1,15 @@
-Hello
+“There were only a few minutes to go and our eyes were glued to the screen. On the edge of our seats, clutching whoever happened to be next to us, we watched as the referee blew his whistle and the German players took their free kick. The ball was hit with precision and skill; it flew up over the Swedish players, past their goalie, and was caught safely in the back of the opposing team’s net. We all jumped up and screamed, a mixture of German and English, of excitement and relief, of pride and anticipation.
 
-public class SumOfNumbers {
-    public static void main(String[] args) {
+We stood, enraptured, for the last several minutes of the game as Germany kept its 2-1 lead over Sweden. The horde of us, Germans and Americans alike, hugged and cheered and made our way out onto the balcony, where we chanted “Deutschland! Deutschland! Deutschland!” for the whole village, the whole country, the whole world to hear. Never have I felt so accepted while being an outsider, so proud of a country that isn’t even mine, so part of something I didn’t really belong to.
 
-        // sum to hold the sum of the first n numbers a is the first number 0 in this
-        // case. r is the difference between the consecutive numbers 1 in this case
+My German friends didn’t care that we were from different countries; they didn’t care that we would only be staying for three weeks. They accepted us into their homes and their daily lives, their traditions and their celebrations. In watching that World Cup game, it didn’t matter that we were from different places; we were all cheering for the same team. The acceptance I felt in Germany extended beyond that living room. I came to the country on a three week exchange with ten other students from my school.
 
-        // I'm using the formula Sn = (n/2)[(2a)-(n-1)r] which is the sum of first n
-        // terms of an arithmetic progression So finding the sum the first n numbers for
-        // each n=0...1,000,000,000 will take same time.
-        // limit is the largest value which when reached the program terminates
-        int limit = 1000000000;
-        double sum, a, r, n, start, stop, finalTime, initialTime;
-        a = 1;
-        r = 1;
-        // Print the table header, enough width i.e Number will
-        // be 9 chars wide, Sum 10 and Time also 10.
-        System.out.printf("%9s\t%10s\t%10s\n", "Number", "Sum", "Time");
+We each stayed with host families and attended the Wildermuth Gymnasium, which was surprisingly accommodating to a gaggle of loud American teenagers. The teachers were friendly and welcoming, the students treated us like ordinary peers, and even the people I interacted with in public were understanding.
 
-        // Get the initial time to be used to get the total time taken by
-        // the program to run.
+Before coming to Germany I feared judgment based on my level of the language (which is nowhere near as good as the German students’ English) and American politics. It was intimidating to be in a country with limited knowledge of the language and the customs, even though everyone was welcoming. People did ask myself and the other students about the US’s political climate, but no one blamed us for it. They recognized that we were outsiders, that the place we came from had flaws, and they accepted us anyway.
 
-        initialTime = System.currentTimeMillis();
+Since that trip, I’ve found myself trying to provide that acceptance to people in my own country. For example, I work at a canoe livery and we receive a lot of visitors with limited English. Some of my coworkers will avoid such customers because they don’t want to take the time to explain things, to exercise patience with someone who may not understand them. If people had done this to me in Germany, my time there would have been much less enjoyable; in fact, I would have been offended.
 
-        for (int i = 0; i <= limit; i++) {
-            // this will be used to know the time taken for
-            // each iteration. i.e stop-start will give us the time
-            // taken by the iteration
-            start = System.currentTimeMillis();
-            n = i;
-            sum = (n / 2) * ((2 * a) + (n - 1) * r);
+So now when someone walks up to me at the livery and asks a question in English that isn’t perfect, I smile and welcome them. I take my time to make sure they understand, that they can have a good time, and that they feel accepted. It’s a small action, but I know firsthand that it can make a big impact, at my place of work and in the world.“
 
-            // Get the current time after the operation is finished
-            stop = System.currentTimeMillis();
-            // Print out the results following the same format as in
-            // the header.
-            System.out.printf("%9d\t%10.0f\t%10f ms\n", i, sum, stop - start);
 
-        }
-        // Get current time at the end of the program
-        finalTime = System.currentTimeMillis();
-        // Print out the total time taken by the program
-        // by subtracting initialTime from finalTime.
-        System.out.printf("\n\nTotal time taken: %f\n\n", finalTime - initialTime);
-
-    }
-
-}
