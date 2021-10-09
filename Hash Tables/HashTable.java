@@ -6,63 +6,44 @@ import java.util.Scanner;
 public class HashTable {
     public static void main(String[] args) {
 
-        String[] allWords = getAllWords("text_file.txt");
-        String[] bucket = new String[10000];// Need a big enough array to fit the biggest index created by the hash
-                                            // function
-        int totalCollisions = 0;// for information about collisions
-        int totalWords = 0; // for total hashed words
-
-        // for each word call the generateHash method to generate an index
-        // for that word. there are two cases.
-        // case 1. If the index generated is empty in the bucket array then insert the
-        // word at that location
-        // case 2. This is the case for collision, If the location is not null, then we
-        // need to findout
-        // whether the word there is the same as the word we have if it's the same, do
-        // nothing otherwise concat a # plus
-        // the word it's to whatever is stored there.
-        for (int i = 0; i < allWords.length; i++) {
-
-            int index = generateHash(allWords[i]);
-            if (bucket[index] == null) {
-                bucket[index] = allWords[i];
-                totalWords++;
-
-            } else if (bucket[index].indexOf(allWords[i]) == -1) {
-                totalCollisions++;
-                totalWords++;
-                bucket[index] = bucket[index] + "#" + allWords[i];
-            }
-
-        }
-        // Summary about the hashing process.
-        System.out.println("Total Words(valid and unique): " + totalWords + "\nTotal collisions: " + totalCollisions);
+        // create a the hash table
+        String[] hashTable = createHashTable("text_file.txt");
+        
+        // Instatiate a scanner for getting input from keyboard
         Scanner scanner = new Scanner(System.in);
+
+        // To determine the seaarching time.
+        long start = 0, stop = 0;
 
         // Within this loop, you can search for a word to see if it exists or not.
         // You can as well terminate the loop.
         // Get a word from the user , convert it to lower case, generate a hash for the
         // word
         // then look at the index(hash) generated for the properties below.
-        // It doesn't exist if the index <0 or index >10000 or location in the bucket is
+        // It doesn't exist if the index <0 or index >10000 or location in the hashTable is
         // null
         // or if the location is not null but the word is not among the # separated
         // words.
+       
         while (true) {
+            
             System.out.print("\nEnter word to search: ");
             String word = scanner.nextLine();
-
+            start = System.currentTimeMillis();
+                     
             word = word.toLowerCase(); // This is compulsory to avaoid logical errors in our hash table.
             int index = generateHash(word);
 
-            if (index < 0 || index > 10000 || bucket[index] == null || (bucket[index].indexOf(word) == -1)) {
-                System.out.println("The word doesn't exist");
+            if (index < 0 || index > 10000 || hashTable[index] == null || (hashTable[index].indexOf(word) == -1)) {
+                System.out.println("Not Found");
 
             } else {
 
-                System.out.println("Word Exits and it's " + bucket[index]);
+                System.out.println("Found at index " +index+" as "+ hashTable[index]);
 
             }
+            stop = System.currentTimeMillis();
+            System.out.println("\nThe search took "+(stop-start)+" ms\n");
             System.out.println("Press Enter to continue Or enter anything to quit");
 
             if ((scanner.nextLine().length() > 0)) {
@@ -82,7 +63,7 @@ public class HashTable {
      * @param line
      * @return ArrayList<String>
      */
-    private static ArrayList<String> getWordsFromLine(String line) {
+    private static String[] getWordsFromLine(String line) {
 
         ArrayList<String> words = new ArrayList<String>();
         try (Scanner rowScanner = new Scanner(line)) {
@@ -112,36 +93,72 @@ public class HashTable {
 
             }
         }
+        String[] finalWordsArray = new String[words.size()];
 
-        return words;
+        finalWordsArray = words.toArray(finalWordsArray);
+        return finalWordsArray;
     }
 
     /**
-     * Method to extract all words(only valid words) int an array of strings(words).
-     * valid words are, words consisting of only alphabets
+     * Method to extract all words(only valid words) into a hash table(array).
+     * Here valid words are, words consisting of only alphabets
+     * It returns the hash table.
      */
-    public static String[] getAllWords(String fileName) {
+    public static String[] createHashTable(String fileName) {
+        // time measurement
+        long start=0, stop=0;
+        start = System.currentTimeMillis();
+        // Need a big enough array to fit the biggest index created by the hash
+        String[] bucket = new String[10000];
 
-        ArrayList<String> allWords = new ArrayList<String>();
+        int totalCollisions = 0;// for information about collisions
 
+        int totalWords = 0; // for total hashed words
+        
         try (Scanner scanner = new Scanner(new File(fileName));) {
             while (scanner.hasNextLine()) {
+                // Read line by line and extract the individual words using the getWordsFromLine method 
+                String[] wordsInLine = getWordsFromLine(scanner.nextLine());
 
-                ArrayList<String> wordsInLine = getWordsFromLine(scanner.nextLine());
+                // Hash the returned words.
+                // for each word call the generateHash method to generate an index
+                // for that word. there are two cases.
+                // case 1. If the index generated is empty in the bucket array then insert the
+                // word at that location
+                // case 2. This is the case for collision, If the location is not null, then we
+                // need to findout
+                // whether the word there is the same as the word we have if it's the same, do
+                // nothing otherwise concat a # plus
+                // the word it's to whatever is stored there.
 
-                allWords.addAll(wordsInLine);
+                for (int i = 0; i < wordsInLine.length; i++) {
+
+                    int index = generateHash(wordsInLine[i]);
+                    if (bucket[index] == null) {
+                        bucket[index] = wordsInLine[i];
+                        totalWords++;
+
+                    } else if (bucket[index].indexOf(wordsInLine[i]) == -1) {
+                        totalCollisions++;
+                        totalWords++;
+                        bucket[index] = bucket[index] + "#" + wordsInLine[i];
+                    }
+
+                }
             }
 
         } catch (FileNotFoundException r) {
             // Exception handling perhaps wrong file name
-            r.getMessage();
-            // System.out.println(e);
+
+            System.out.println(r.getMessage());
         }
+        stop = System.currentTimeMillis();
+        System.out.println("The reading and hashing processes took "+(stop-start)+" ms");
+        // Summary about the hashing process.
+        System.out.println("Total Words(valid and unique): " + totalWords + "\nTotal collisions: " + totalCollisions);
 
-        String[] finalWordsArray = new String[allWords.size()];
-
-        finalWordsArray = allWords.toArray(finalWordsArray);
-        return finalWordsArray;
+        // Return the hash table.
+        return bucket;
 
     }
 
