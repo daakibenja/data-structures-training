@@ -1,49 +1,245 @@
-Hello
-
-public class SumOfNumbers {
-    public static void main(String[] args) {
-
-        // sum to hold the sum of the first n numbers a is the first number 0 in this
-        // case. r is the difference between the consecutive numbers 1 in this case
-
-        // I'm using the formula Sn = (n/2)[(2a)-(n-1)r] which is the sum of first n
-        // terms of an arithmetic progression So finding the sum the first n numbers for
-        // each n=0...1,000,000,000 will take same time.
-        // limit is the largest value which when reached the program terminates
-        int limit = 1000000000;
-        double sum, a, r, n, start, stop, finalTime, initialTime;
-        a = 1;
-        r = 1;
-        // Print the table header, enough width i.e Number will
-        // be 9 chars wide, Sum 10 and Time also 10.
-        System.out.printf("%9s\t%10s\t%10s\n", "Number", "Sum", "Time");
-
-        // Get the initial time to be used to get the total time taken by
-        // the program to run.
-
-        initialTime = System.currentTimeMillis();
-
-        for (int i = 0; i <= limit; i++) {
-            // this will be used to know the time taken for
-            // each iteration. i.e stop-start will give us the time
-            // taken by the iteration
-            start = System.currentTimeMillis();
-            n = i;
-            sum = (n / 2) * ((2 * a) + (n - 1) * r);
-
-            // Get the current time after the operation is finished
-            stop = System.currentTimeMillis();
-            // Print out the results following the same format as in
-            // the header.
-            System.out.printf("%9d\t%10.0f\t%10f ms\n", i, sum, stop - start);
-
-        }
-        // Get current time at the end of the program
-        finalTime = System.currentTimeMillis();
-        // Print out the total time taken by the program
-        // by subtracting initialTime from finalTime.
-        System.out.printf("\n\nTotal time taken: %f\n\n", finalTime - initialTime);
-
-    }
-
-}
+In the literature of data clustering, different words may be used to express the same thing.
+For instance, given a database that contains many records, the terms data point, pattern
+case, observation, object, individual, item, and tuple are all used to denote a single data
+item. In this book, we will use record, object, or data point to denote a single record. Also,
+for a data point in a high-dimensional space, we shall use variable, attribute, or feature to
+denote an individual scalar component (Jain et al., 1999). In this book, we almost always use
+the standard data structure in statistics, i.e., the cases-by-variables data structure (Hartigan,
+1975).
+denoted by D = {x1, x2, . . . , xn}, where xi = (xi1, xi2, . . . , xid )T is a vector denoting
+the ith object and xij is a scalar denoting the j th component or attribute of xi . The number
+of attributes d is also called the dimensionality of the data set.
+1.2.2 Distances and Similarities
+Distances and similarities play an important role in cluster analysis (Jain and Dubes, 1988;
+Anderberg, 1973). In the literature of data clustering, similarity measures, similarity coefficients,
+dissimilarity measures, or distances are used to describe quantitatively the similarity
+or dissimilarity of two data points or two clusters.
+In general, distance and similarity are reciprocal concepts. Often, similarity measures
+and similarity coefficients are used to describe quantitatively how similar two data points are
+or how similar two clusters are: the greater the similarity coefficient, the more similar are the
+two data points. Dissimilarity measure and distance are the other way around: the greater
+the dissimilarity measure or distance, the more dissimilar are the two data points or the two
+clusters. Consider the two data points x = (x1, x2, . . . , xd )T and y = (y1, y2, . . . , yd )T , for
+6 Chapter 1. Data Clustering
+example. The Euclidean distance between x and y is calculated as
+d(x, y) =
+
+
+d
+j=1
+(xj − yj )2
+
+
+12
+.
+Every clustering algorithm is based on the index of similarity or dissimilarity between
+data points (Jain and Dubes, 1988). If there is no measure of similarity or dissimilarity
+between pairs of data points, then no meaningful cluster analysis is possible. Various
+similarity and dissimilarity measures have been discussed by Sokal and Sneath (1973),
+Legendre and Legendre (1983), Anderberg (1973), Gordon (1999), and Everitt et al. (2001).
+In this book, various distances and similarities are presented in Chapter 6.
+1.2.3 Clusters, Centers, and Modes
+In cluster analysis, the terms cluster, group, and class have been used in an essentially
+intuitive manner without a uniform definition (Everitt, 1993). Everitt (1993) suggested that
+if using a term such as cluster produces an answer of value to the investigators, then it is all
+that is required. Generally, the common sense of a cluster will combine various plausible
+criteria and require (Bock, 1989), for example, all objects in a cluster to
+1. share the same or closely related properties;
+2. show small mutual distances or dissimilarities;
+3. have “contacts” or “relations” with at least one other object in the group; or
+4. be clearly distinguishable from the complement, i.e., the rest of the objects in the data
+set.
+Carmichael et al. (1968) also suggested that the set contain clusters of points if the distribution
+of the points meets the following conditions:
+1. There are continuous and relative densely populated regions of the space.
+2. These are surrounded by continuous and relatively empty regions of the space.
+For numerical data, Lorr (1983) suggested that there appear to be two kinds of clusters:
+compact clusters and chained clusters. A compact cluster is a set of data points in which
+members have high mutual similarity. Usually, a compact cluster can be represented by
+a representative point or center. Figure 1.2, for example, gives three compact clusters in
+a two-dimensional space. The clusters shown in Figure 1.2 are well separated and each
+can be represented by its center. Further discussions can be found in Michaud (1997). For
+categorical data, a mode is used to represent a cluster (Huang, 1998).
+A chained cluster is a set of data points in which every member is more like other
+members in the cluster than other data points not in the cluster. More intuitively, any two
+data points in a chained cluster are reachable through a path, i.e., there is a path that connects
+the two data points in the cluster. For example, Figure 1.3 gives two chained clusters—one
+looks like a rotated “T,” while the other looks like an “O.”
+1.2. The Vocabulary of Clustering 7
+Figure 1.2. Three well-separated center-based clusters in a two-dimensional space.
+Figure 1.3. Two chained clusters in a two-dimensional space.
+1.2.4 Hard Clustering and Fuzzy Clustering
+In hard clustering, algorithms assign a class label li ∈ {1, 2, . . . , k} to each object xi to
+identify its cluster class, where k is the number of clusters. In other words, in hard clustering,
+each object is assumed to belong to one and only one cluster.
+Mathematically, the result of hard clustering algorithms can be represented by a k×n
+matrix
+U =
+
+
+u11 u12 · · · u1n
+u21 u22 · · · u2n
+...
+...
+. . .
+...
+uk1 un2 · · · ukn
+
+
+, (1.1)
+where n denotes the number of records in the data set, k denotes the number of clusters, and
+uji satisfies
+uji ∈ {0, 1}, 1 ≤ j ≤ k, 1 ≤ i ≤ n, (1.2a)
+k
+j=1
+uji = 1, 1 ≤ i ≤ n, (1.2b)
+n
+i=1
+uji > 0, 1 ≤ j ≤ k. (1.2c)
+8 Chapter 1. Data Clustering
+Constraint (1.2a) implies that each object either belongs to a cluster or not. Constraint (1.2b)
+implies that each object belongs to only one cluster. Constraint (1.2c) implies that each
+cluster contains at least one object, i.e., no empty clusters are allowed. We call U = (uji)
+defined in equation (1.2) a hard k-partition of the data set D.
+In fuzzy clustering, the assumption is relaxed so that an object can belong to one
+or more clusters with probabilities. The result of fuzzy clustering algorithms can also
+be represented by a k × n matrix U defined in equation (1.2) with the following relaxed
+constraints:
+uji ∈ [0, 1], 1 ≤ j ≤ k, 1 ≤ i ≤ n, (1.3a)
+k
+j=1
+uji = 1, 1 ≤ i ≤ n, (1.3b)
+n
+i=1
+uji > 0, 1 ≤ j ≤ k. (1.3c)
+Similarly, we call U = (uji) defined in equation (1.3) a fuzzy k-partition.
+1.2.5 Validity Indices
+Since clustering is an unsupervised process and most of the clustering algorithms are very
+sensitive to their initial assumptions, some sort of evaluation is required to assess the clustering
+results in most of the applications. Validity indices are measures that are used to
+evaluate and assess the results of a clustering algorithm. In Chapter 17, we shall introduce
+some validity indices for cluster analysis.
+1.3 Clustering Processes
+As a fundamental pattern recognition problem, a well-designed clustering algorithm usually
+involves the following four design phases: data representation, modeling, optimization, and
+validation (Buhmann, 2003) (see Figure 1.4). The data representation phase predetermines
+what kind of cluster structures can be discovered in the data. On the basis of data representation,
+the modeling phase defines the notion of clusters and the criteria that separate
+desired group structures from unfavorable ones. For numerical data, for example, there
+are at least two aspects to the choice of a cluster structural model: compact (spherical or
+ellipsoidal) clusters and extended (serpentine) clusters (Lorr, 1983). In the modeling phase,
+a quality measure that can be either optimized or approximated during the search for hidden
+structures in the data is produced.
+The goal of clustering is to assign data points with similar properties to the same
+groups and dissimilar data points to different groups. Generally, clustering problems can
+be divided into two categories (see Figure 1.5): hard clustering (or crisp clustering) and
+fuzzy clustering (or soft clustering). In hard clustering, a data point belongs to one and only
+one cluster, while in fuzzy clustering, a data point may belong to two or more clusters with
+some probabilities. Mathematically, a clustering of a given data set D can be represented
+1.3. Clustering Processes 9
+Data representaion
+Modeling
+Optimization
+Validation
+Figure 1.4. Processes of data clustering.
+by an assignment function f : D → [0, 1]k, x → f (x), defined as follows:
+f (x) =
+
+
+f1(x)
+f2(x)
+...
+fk(x)
+
+
+, (1.4)
+where fi(x) ∈ [0, 1] for i = 1, 2, . . . , k and x ∈ D, and
+k
+i=1
+fi(x) = 1 ∀x ∈ D.
+If for every x ∈ D, fi(x) ∈ {0, 1}, then the clustering represented by f is a hard clustering;
+otherwise, it is a fuzzy clustering.
+In general, conventional clustering algorithms can be classified into two categories:
+hierarchical algorithms and partitional algorithms. There are two types of hierarchical algorithms:
+divisive hierarchical algorithms and agglomerative hierarchical algorithms. In
+a divisive hierarchical algorithm, the algorithm proceeds from the top to the bottom, i.e.,
+the algorithm starts with one large cluster containing all the data points in the data set and
+continues splitting clusters; in an agglomerative hierarchical algorithm, the algorithm proceeds
+from the bottom to the top, i.e., the algorithm starts with clusters each containing one
+data point and continues merging the clusters. Unlike hierarchical algorithms, partitioning
+algorithms create a one-level nonoverlapping partitioning of the data points.
+For large data sets, hierarchical methods become impractical unless other techniques
+are incorporated, because usually hierarchical methods are O(n2) for memory space and
+O(n3) for CPU time (Zait and Messatfa, 1997; Hartigan, 1975; Murtagh, 1983), where n is
+the number of data points in the data set.
+10 Chapter 1. Data Clustering
+Clustering problems
+Hard clustering Fuzzy clustering
+Partitional Hierarchical
+Divisive Agglomerative
+Figure 1.5. Diagram of clustering algorithms.
+Although some theoretical investigations have been made for general clustering problems
+(Fisher, 1958; Friedman and Rubin, 1967; Jardine and Sibson, 1968), most clustering
+methods have been developed and studied for specific situations (Rand, 1971). Examples
+illustrating various aspects of cluster analysis can be found in Morgan (1981).
+1.4 Dealing with Missing Values
+In real-world data sets, we often encounter two problems: some important data are missing
+in the data sets, and there might be errors in the data sets. In this section, we discuss and
+present some existing methods for dealing with missing values.
+In general, there are three cases according to how missing values can occur in data
+sets (Fujikawa and Ho, 2002):
+1. Missing values occur in several variables.
+2. Missing values occur in a number of records.
+3. Missing values occur randomly in variables and records.
+If there exists a record or a variable in the data set for which all measurements are
+missing, then there is really no information on this record or variable, so the record or
+variable has to be removed from the data set (Kaufman and Rousseeuw, 1990). If there are
+not many missing values on records or variables, the methods to deal with missing values
+can be classified into two groups (Fujikawa and Ho, 2002):
+(a) prereplacing methods, which replace missing values before the data-mining process;
+(b) embedded methods, which deal with missing values during the data-mining process.
+A number of methods for dealing with missing values have been presented in (Fujikawa
+and Ho, 2002). Also, three cluster-based algorithms to deal with missing values
+have been proposed based on the mean-and-mode method in (Fujikawa and Ho, 2002):
+1.4. Dealing with Missing Values 11
+Table 1.1. A list of methods for dealing with missing values.
+Method Group Attribute Case Cost
+Mean-and-mode method (a) Num & Cat (2) Low
+Linear regression (a) Num (2) Low
+Standard deviation method (a) Num (2) Low
+Nearest neighbor estimator (a) Num & Cat (1) High
+Decision tree imputation (a) Cat (1) Middle
+Autoassociative neural network (a) Num & Cat (1) High
+Casewise deletion (b) Num & Cat (2) Low
+Lazy decision tree (b) Num & Cat (1) High
+Dynamic path generation (b) Num & Cat (1) High
+C4.5 (b) Num & Cat (1) Middle
+Surrogate split (b) Num & Cat (1) Middle
+NCBMM (Natural Cluster Based Mean-and-Mode algorithm), RCBMM (attribute Rank
+Cluster Based Mean-and-Mode algorithm) and KMCMM (k-Means Cluster-Based Meanand-
+Mode algorithm). NCBMMis a method of filling in missing values in case of supervised
+data. NCBMM uses the class attribute to divide objects into natural clusters and uses the
+mean or mode of each cluster to fill in the missing values of objects in that cluster depending
+on the type of attribute. Since most clustering applications are unsupervised, the NCBMM
+method cannot be applied directly. The last two methods, RCBMM and KMCMM, can be
+applied to both supervised and unsupervised data clustering.
+RCBMM is a method of filling in missing values for categorical attributes and is
+independent of the class attribute. This method consists of three steps. Given a missing
+attribute a, at the first step, this method ranks all categorical attributes by their distance from
+the missing value attribute a. The attribute with the smallest distance is used for clustering.
+At the second step, all records are divided into clusters, each of which contains records with
+the same value of the selected attribute. Finally, the mode of each cluster is used to fill in the
+missing values. This process is applied to each missing attribute. The distance between two
+attributes can be computed using the method proposed in (Mántaras, 1991) (see Section 6.9).
+KMCMM is a method of filling in missing values for numerical attributes and is
+independent of the class attribute. It also consists of three steps. Given a missing attribute
+a, firstly, the algorithm ranks all the numerical attributes in increasing order of absolute
+correlation coefficients between them and the missing attribute a. Secondly, the objects
+are divided into k clusters by the k-means algorithm based on the values of a. Thirdly, the
+missing value on attribute a is replaced by the mean of each cluster. This process is applied
+to each missing attribute.
+Cluster-based methods to deal with missing values and errors in data have also been
+discussed in (Lee et al., 1976). Other discussions about missing values and errors have been
+presented in (Wu and Barbará, 2002) and (Wishart, 1978).
+12 Chapter 1. Data Clustering
+1.5 Resources for Clusterin
